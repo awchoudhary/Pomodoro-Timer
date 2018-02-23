@@ -1,15 +1,24 @@
+//Timer object to perform countdown
 var pomodoroTimer = false;
-var pomodoroCycles = [25, 5, 25, 5, 25, 5, 25, 15];
-var cycleLabels = ["First Round", "Break", "Second Round", "Break", "Third Round", "Break", "Fourth Round", "Break"];
-var cycleIndex = 0;
+
+//The length of each Pomodoro round in seconds
+var roundDurations = [1500, 30, 1500, 30, 1500, 30, 1500, 900];
+
+//THe name for each Pomodoro round
+var roundLabels = ["First Round", "Break", "Second Round", "Break", "Third Round", "Break", "Fourth Round", "Break"];
+
+//Keeps track of the current Pomodoro round
+var currentRound = 0;
+
+//Indicates if timer is paused
 var paused = false;
 
 $("document").ready(function(){
-    $("#start_button").click(function(){
-        if($("#start_button").html() === "Pause"){
+    $("#timerButton").click(function(){
+        if($("#timerButton").html() === "Pause"){
             paused = true;
-            $("#start_button").html("Resume");
-            $("#start_button").removeClass("timerButtonPause").addClass("timerButtonStart");
+            $("#timerButton").html("Resume");
+            $("#timerButton").removeClass("timerButtonPause").addClass("timerButtonStart");
         }
         else{
             if(!pomodoroTimer){
@@ -18,15 +27,15 @@ $("document").ready(function(){
             else{
                 paused = false;
             }
-            $("#start_button").html("Pause");
-            $("#start_button").removeClass("timerButtonStart").addClass("timerButtonPause");
+            $("#timerButton").html("Pause");
+            $("#timerButton").removeClass("timerButtonStart").addClass("timerButtonPause");
         }
     });
 });
 
 function startPomodoroTimer(){
     // Set the date we're counting down to
-    var countDownTime = pomodoroCycles[cycleIndex];
+    var countDownTime = roundDurations[currentRound];
                     
     // Update the count down every 1 second
     pomodoroTimer = setInterval(function() {
@@ -39,28 +48,31 @@ function startPomodoroTimer(){
         $("#timer").removeClass("timerTimeUp");
         $("#timer").html(getCountdownString(countDownTime));
                             
-        // If the count down is over, write some text 
+        // If the count down is over, clear the timer
         if (countDownTime < 0) {
             clearInterval(pomodoroTimer);
             pomodoroTimer = false;
 
-            if(cycleIndex == pomodoroCycles.length - 1){
-                cycleIndex = 0;
+            //update the current round
+            if(currentRound == roundDurations.length - 1){
+                currentRound = 0;
             }
             else{
-                cycleIndex = cycleIndex + 1;
+                currentRound = currentRound + 1;
             }
 
+            //set "time up" text and add red text styling
             $("#timer").html("TIME UP");
             $("#timer").addClass("timerTimeUp");
 
-            $("#start_button").html("Start " + cycleLabels[cycleIndex] + "<br> (" + pomodoroCycles[cycleIndex] + " Minutes)");
-            $("#start_button").removeClass("timerButtonPause").addClass("timerButtonStart");
+            //update button UI
+            $("#timerButton").html("Start " + roundLabels[currentRound] + "<br> (" + roundDurations[currentRound]/60 + " Minutes)");
+            $("#timerButton").removeClass("timerButtonPause").addClass("timerButtonStart");
         }
     }, 1000);
 }
 
-//Convert seconds to "MM:ss" format string
+//Convert seconds to "MM:ss" formated string
 function getCountdownString(time){
     var minutes = Math.floor(time / 60);
     var seconds = time - (minutes * 60);
