@@ -1,7 +1,7 @@
 //Timer object to perform countdown
 var pomodoroTimer = false;
 
-//Keeps track of the current Pomodoro round
+//Keeps track of the current Pomodoro round, including breaks
 var currentRound = 1;
 
 //Indicates if timer is paused
@@ -9,12 +9,14 @@ var paused = false;
 
 $("document").ready(function(){
     $("#timerButton").click(function(){
+        //If button has the "pause" label, set paused flag to true and update UI
         if($("#timerButton").html() === "Pause"){
             paused = true;
             $("#timerButton").html("Resume");
             $("#timerButton").removeClass("timerButtonPause").addClass("timerButtonStart");
         }
         else{
+            //if the pomodoroTimer is false, create and start a new timer.
             if(!pomodoroTimer){
                 startPomodoroTimer();
             }
@@ -28,14 +30,14 @@ $("document").ready(function(){
 });
 
 function startPomodoroTimer(){
-    // Set the date we're counting down to
+    // Set the countdown
     var countdown = getCountdownTime(currentRound);
                     
     // Update the count down every 1 second
     pomodoroTimer = setInterval(function() {
-        
+        //only update countdown if not paused.
         if(!paused){
-            countdown = countdown - 1;
+            countdown--;
         }                
 
         // Update Timer UI
@@ -55,13 +57,13 @@ function startPomodoroTimer(){
             $("#timer").addClass("timerTimeUp");
 
             //update button UI
-            $("#timerButton").html(getButtonLabel(currentRound, getCountdownTime(currentRound)));
+            $("#timerButton").html(getStartButtonLabel(currentRound, getCountdownTime(currentRound)));
             $("#timerButton").removeClass("timerButtonPause").addClass("timerButtonStart");
         }
     }, 1000);
 }
 
-function getButtonLabel(currentRound, countdown){
+function getStartButtonLabel(currentRound, countdown){
     //every even numbered round is a short break.
     if(currentRound % 2 == 0){
         return "Start Break <br> (" + countdown/60 + " Minutes)";
