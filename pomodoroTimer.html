@@ -1,16 +1,51 @@
 <!DOCTYPE HTML>
 <html>
-    <head>
-        <link href='https://fonts.googleapis.com/css?family=Didact Gothic' rel='stylesheet'>
-        <link href='style.css' rel='stylesheet'>
-    </head>
-    <body>
-        <div class="console">
-            <p id="timer" class="timer">25:00</p>
-            <button id="timerButton" class="timerButtonStart" type="button">Start First Round <br> (25 Minutes)</button>  
-        </div>
+   <head>
+      <link href='https://fonts.googleapis.com/css?family=Didact Gothic' rel='stylesheet'>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+      <link href='style.css' rel='stylesheet'>
+   </head>
+   <body>
+      <div class="console">
+         <p id="timer" class="timer"></p>
+         <button id="timerButton" class="timerButtonStart" type="button"></button>
+      </div>
+      <!-- Button trigger modal -->
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#settingsModal">
+      Settings
+      </button>
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-        <script src="PomodoroTimer.js"></script>
-    </body>
+      <!-- Modal -->
+      <div class="modal" id="settingsModal" tabindex="-1" role="dialog">
+         <div class="modal-dialog" role="document">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h5 class="modal-title">Settings (Input all durations in minutes)</h5>
+               </div>
+               <div class="modal-body">
+                  <div class="row" style="margin-bottom:5px">
+                     <div class="col-md-4">Round Duration</div>
+                     <div class="col-md-4 col-md-offset-4"><input id="roundDurationInput" type="number"/></div>
+                  </div>
+                  <div class="row" style="margin-bottom:5px">
+                     <div class="col-md-4">Short Break Duration</div>
+                     <div class="col-md-4 col-md-offset-4"><input id="shortBreakDurationInput" type="number"/></div>
+                  </div>
+                  <div class="row">
+                     <div class="col-md-4">Long Break Duration</div>
+                     <div class="col-md-4 col-md-offset-4"><input id="longBreakDurationInput" type="number"/></div>
+                  </div>
+               </div>
+               <div class="modal-footer">
+                  <button type="button" id="settingsSaveButton" class="btn btn-primary">Save changes</button>
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+               </div>
+            </div>
+         </div>
+      </div>
+
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+      <script src="PomodoroTimer.js"></script>
+   </body>
 </html>
